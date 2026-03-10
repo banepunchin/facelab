@@ -1,0 +1,115 @@
+url: https://debruine.github.io/webmorphR/
+
+development:
+  mode: unreleased
+  
+home:
+  title: Reproducible Stimuli
+  description: Create reproducible image stimuli, specialised for images with webmorph.org templates.
+
+authors:
+  Lisa DeBruine:
+    href: https://debruine.github.io/
+    
+template:
+  bootstrap: 5
+  bootswatch: yeti
+  bslib:
+    primary: "#204969"
+    base_font: {google: "Nunito"}
+    heading_font: {google: "Nunito"}
+  opengraph:
+    image:
+      src: man/figures/logo.png
+      alt: "webmorphR logo: a blue hexagon with a simplified white wireframe face"
+    twitter:
+      creator: "@lisadebruine"
+      site: "@webmorph_org"
+      card: summary
+      
+navbar:
+  structure:
+    left: [intro, reference, articles, news]
+    right: [twitter, figshare, osf, github]
+  components:
+    twitter:
+      icon: fa-twitter
+      href: https://twitter.com/webmorph_org
+      aria-label: Twitter
+    figshare:
+      icon: "ai-figshare"
+      href: "https://figshare.com/search?q=webmorph%20psychomorph"
+      aria-label: Figshare
+    osf:
+      icon: "ai-osf"
+      href: "https://osf.io/search/?q=webmorph,psychomorph"
+      aria-label: OSF
+
+figures:
+  dev: grDevices::png
+  dpi: 96
+  dev.args: 
+    bg: "#F1F3F5"
+  fig.ext: png
+  fig.width: 7.2916667
+  fig.height: ~
+  fig.retina: 2
+  fig.asp: 0.5048544
+  bg: "#F1F3F5"
+  other.parameters: []
+
+articles:
+- title: Demos
+  navbar: ~
+  contents:
+  - stimuli
+  - manip
+  - masking
+  - figures
+  - similarity
+
+reference:
+- title: Stimuli
+  desc: Read, write, or access stimuli
+  contents:
+  - starts_with("demo_")
+  - has_concept("stim")
+- title: Webmorph
+  desc: Average or tansform images using webmorph.org
+  contents:
+  - has_concept("webmorph")
+- title: Visualisation
+  desc: ~
+  contents:
+  - has_concept("viz")
+- title: Image Manipulation
+  desc: ~
+  contents:
+  - has_concept("manipulators")
+- title: Delineation
+  desc: Create, alter, or access delineations
+  contents:
+  - has_concept("tem")
+- title: Metrics/Info
+  desc: ~
+  contents:
+  - has_concept("info")
+- title: Helper functions
+  desc: ~
+  contents:
+  - '`bounds`'
+  - '`color_conv`'
+  - '`features`'
+  - '`image_func_types`'
+  - '`patch`'
+  - '`social_media_size`'
+  - '`subset.stimlist`'
+  - '`wm_opts`'
+  - '`wm_opts_defaults`'
+- title: Geomorph functions
+  desc: Functions to create geomorph-compatible formats
+  contents:
+  - '`tems_to_array`'
+  - '`write_tps`'
+
+

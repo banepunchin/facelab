@@ -1,0 +1,17 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^LICENSE\.md$
+^README\.Rmd$
+^docs$
+^pkgdown$
+^stuff$
+^data-raw$
+^codecov\.yml$
+^vignettes$
+^paper$
+^\.github$
+^man/figures/home
+^cran-comments\.md$
+.zenodo.json
+CITATION
+^CRAN-SUBMISSION$

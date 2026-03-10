@@ -1,0 +1,378 @@
+/* ============================================================
+   The Averageness Effect — styles.css
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #0d0d0d;
+  --fg:        #efefef;
+  --muted:     #555;
+  --faint:     #222;
+  --border:    #2a2a2a;
+  --accent:    #ffffff;
+  --radius:    6px;
+  --max-w:     520px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.state {
+  width: 100%;
+  max-width: var(--max-w);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  animation: fadeIn 0.35s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   INTRO STATE
+   ============================================================ */
+
+.intro-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+  max-width: 440px;
+}
+
+.eyebrow {
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.app-title {
+  font-size: clamp(2rem, 6vw, 3rem);
+  font-weight: 200;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+  line-height: 1.1;
+}
+
+.intro-lead {
+  font-size: 1.05rem;
+  font-weight: 300;
+  color: #bbb;
+  line-height: 1.6;
+}
+
+.intro-rule {
+  width: 40px;
+  height: 1px;
+  background: var(--border);
+}
+
+.intro-science {
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+
+.btn-main {
+  background: var(--accent) !important;
+  color: #000 !important;
+  border: none !important;
+  border-radius: 40px !important;
+  padding: 12px 36px !important;
+  font-size: 0.88rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  cursor: pointer !important;
+  transition: opacity 0.15s, transform 0.1s !important;
+  box-shadow: none !important;
+  margin-top: 8px !important;
+}
+
+.btn-main:hover  { opacity: 0.85 !important; }
+.btn-main:active { transform: scale(0.97) !important; }
+
+.btn-secondary {
+  background: transparent !important;
+  color: var(--fg) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 40px !important;
+}
+
+.btn-secondary:hover {
+  border-color: #555 !important;
+  opacity: 1 !important;
+}
+
+/* ============================================================
+   RATING STATE
+   ============================================================ */
+
+.rating-state { gap: 24px; }
+
+/* Progress */
+.progress-track {
+  width: 100%;
+  height: 2px;
+  background: var(--faint);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-text {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  align-self: flex-end;
+}
+
+.progress-current { color: var(--fg); }
+
+/* Face image */
+.face-frame {
+  width: 100%;
+  max-width: 360px;
+}
+
+.rating-face-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--radius);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+  transition: opacity 0.2s ease;
+}
+
+/* Rating buttons */
+.rating-section {
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rating-scale-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0 4px;
+}
+
+.rating-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.rate-btn {
+  flex: 1;
+  max-width: 64px;
+  height: 52px;
+  background: var(--faint) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+  color: #777 !important;
+  font-size: 1rem !important;
+  font-weight: 400 !important;
+  cursor: pointer !important;
+  transition: all 0.12s ease !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.rate-btn:hover {
+  background: #1e1e1e !important;
+  border-color: #444 !important;
+  color: var(--fg) !important;
+  transform: translateY(-2px) !important;
+}
+
+.rate-btn:active {
+  transform: translateY(0) scale(0.95) !important;
+  background: #2a2a2a !important;
+}
+
+/* ============================================================
+   PROCESSING STATE
+   ============================================================ */
+
+.processing-state {
+  min-height: 60vh;
+  justify-content: center;
+}
+
+.processing-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.pulse-ring {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-top-color: var(--accent);
+  border-right-color: rgba(255,255,255,0.3);
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.processing-text {
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ============================================================
+   RESULT STATE
+   ============================================================ */
+
+.result-state { gap: 28px; }
+
+.result-eyebrow {
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.result-image-wrap {
+  width: 100%;
+  max-width: 380px;
+}
+
+.result-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--radius);
+  box-shadow: 0 12px 60px rgba(0,0,0,0.7);
+}
+
+/* Thumbnails */
+.thumbs-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.thumbs-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.thumbs-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.thumb-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.thumb-img {
+  width: 70px;
+  height: auto;
+  border-radius: 4px;
+  opacity: 0.75;
+  display: block;
+}
+
+.thumb-score {
+  display: flex;
+  gap: 1px;
+}
+
+.star { font-size: 0.55rem; }
+.star-on  { color: #fff; }
+.star-off { color: #333; }
+
+/* Science callout */
+.science-callout {
+  max-width: 400px;
+  border-left: 2px solid var(--border);
+  padding: 12px 20px;
+}
+
+.science-callout p {
+  font-size: 0.8rem;
+  color: #666;
+  line-height: 1.8;
+  font-style: italic;
+}
+
+.result-actions { margin-top: 4px; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 480px) {
+  .app-shell { padding: 24px 16px; align-items: flex-start; }
+  .face-frame, .result-image-wrap { max-width: 100%; }
+  .thumb-img { width: 56px; }
+}
+
+/* Credit line */
+.credit {
+  margin-top: 28px;
+  font-size: 11px;
+  color: #555;
+  letter-spacing: 0.02em;
+}
+.credit a {
+  color: #777;
+  text-decoration: none;
+  border-bottom: 1px solid #444;
+}
+.credit a:hover { color: #aaa; border-color: #888; }

@@ -1,0 +1,14 @@
+R/
+man/
+tests/
+vignettes/
+inst/
+.git
+.gitignore
+*.Rproj
+generate_*.R
+DESCRIPTION
+NAMESPACE
+CLAUDE.md
+blslogo.png
+shiny_app/www/composites/

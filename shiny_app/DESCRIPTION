@@ -1,0 +1,8 @@
+Package: AveragenessEffect
+Title: The Averageness Effect
+Version: 1.0.0
+Imports:
+  shiny,
+  bslib,
+  jsonlite,
+  magick
