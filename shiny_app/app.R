@@ -279,6 +279,31 @@ ui <- page_fluid(
         display: flex !important; flex-direction: column !important; gap: 14px;
       }
       .faces-grid-panel { flex: 1 !important; min-width: 0; overflow-y: auto; }
+      .face-grid {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)) !important;
+        gap: 6px !important;
+      }
+      .face-card {
+        position: relative !important; cursor: pointer !important;
+        border-radius: 6px !important; overflow: hidden !important;
+        border: 2px solid transparent !important;
+        transition: border-color 0.15s ease, transform 0.1s ease !important;
+        background: #222 !important;
+      }
+      .face-card.selected { border-color: #ffffff !important; }
+      .face-card:hover { border-color: rgba(255,255,255,0.3) !important; }
+      .face-thumb {
+        width: 100% !important; aspect-ratio: 1/1 !important;
+        object-fit: cover !important; display: block !important;
+      }
+      .preview-slot {
+        width: 100% !important;
+        background: rgba(255,255,255,0.02) !important;
+        border: 1px dashed rgba(255,255,255,0.1) !important;
+        border-radius: 8px !important; overflow: hidden !important;
+      }
+      .preview-slot img { width: 100% !important; height: auto !important; display: block !important; }
     "))
   ),
   # Script at end of body so jQuery is guaranteed to be loaded
