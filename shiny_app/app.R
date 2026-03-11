@@ -304,11 +304,32 @@ ui <- page_fluid(
         border-radius: 8px !important; overflow: hidden !important;
       }
       .preview-slot img { width: 100% !important; height: auto !important; display: block !important; }
+      .preview-slot { min-height: 300px !important; }
     "))
   ),
   # Script at end of body so jQuery is guaranteed to be loaded
   uiOutput("page"),
-  tags$script(src = "app.js")
+  tags$script(HTML("
+function faceCardClick(el) {
+  var $card  = $(el);
+  var faceId = $card.attr('data-face-id');
+  $card.toggleClass('selected');
+  if ($card.hasClass('selected')) {
+    $card.append('<div class=\"face-check\">\\u2713</div>');
+  } else {
+    $card.find('.face-check').remove();
+  }
+  Shiny.setInputValue('preview_face', faceId, { priority: 'event' });
+  var selected = [];
+  $('.face-card.selected').each(function () {
+    selected.push($(this).attr('data-face-id'));
+  });
+  Shiny.setInputValue('selected_faces', selected.length > 0 ? selected : null, { priority: 'event' });
+}
+Shiny.addCustomMessageHandler('clearSelection', function (_msg) {
+  $('.face-card').removeClass('selected').find('.face-check').remove();
+});
+  "))
 )
 
 # =============================================================================
