@@ -254,7 +254,32 @@ ui <- page_fluid(
   ),
   tags$head(
     tags$link(rel = "stylesheet", href = "styles.css"),
-    tags$link(rel = "icon", type = "image/png", href = "blslogo.png")
+    tags$link(rel = "icon", type = "image/png", href = "blslogo.png"),
+    # Critical grid layout inlined — cannot be stale-cached like a static file
+    tags$style(HTML("
+      .shiny-html-output { display: block; width: 100%; }
+      .container-fluid    { padding-left: 0 !important; padding-right: 0 !important; }
+      .grid-state {
+        display: flex !important; flex-direction: column !important;
+        min-height: 100vh; width: 100%; max-width: none !important;
+        background: #0d0d0d;
+      }
+      .grid-topbar {
+        display: flex !important; align-items: center !important;
+        width: 100%; padding: 12px 24px;
+        border-bottom: 1px solid #2a2a2a; flex-shrink: 0;
+      }
+      .grid-layout {
+        display: flex !important; flex: 1;
+        gap: 20px; padding: 20px 24px;
+        overflow: hidden; height: calc(100vh - 49px);
+      }
+      .preview-panel {
+        width: 340px; flex-shrink: 0;
+        display: flex !important; flex-direction: column !important; gap: 14px;
+      }
+      .faces-grid-panel { flex: 1 !important; min-width: 0; overflow-y: auto; }
+    "))
   ),
   # Script at end of body so jQuery is guaranteed to be loaded
   uiOutput("page"),

@@ -435,10 +435,6 @@ body {
    GRID STATE — full-viewport flow layout (no fixed positioning)
    ============================================================ */
 
-/* Reset Bootstrap container padding when grid is active */
-.container-fluid:has(.grid-state) {
-  padding: 0;
-}
 
 .grid-state {
   display: flex;
