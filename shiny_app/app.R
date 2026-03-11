@@ -257,7 +257,7 @@ ui <- page_fluid(
     tags$link(rel = "icon", type = "image/png", href = "blslogo.png")
   ),
   # Script at end of body so jQuery is guaranteed to be loaded
-  div(class = "app-shell", uiOutput("page")),
+  uiOutput("page"),
   tags$script(src = "app.js")
 )
 
@@ -293,15 +293,21 @@ server <- function(input, output, session) {
 
   # -- Page router ------------------------------------------------------------
   output$page <- renderUI({
-    switch(s$state,
-      intro      = ui_intro(),
-      mode_type  = ui_mode_type(s$gender),
-      quiz_mode  = ui_quiz_mode(),
-      rating     = ui_rating(s$face_ids, s$current_idx),
-      processing = ui_processing(),
-      result     = ui_result(s$low_faces, s$ratings, s$mode),
-      grid       = ui_grid_shell(s$grid_faces)
-    )
+    if (s$state == "grid") {
+      # Grid renders directly — no app-shell wrapper so it can fill the viewport
+      ui_grid_shell(s$grid_faces)
+    } else {
+      div(class = "app-shell",
+        switch(s$state,
+          intro      = ui_intro(),
+          mode_type  = ui_mode_type(s$gender),
+          quiz_mode  = ui_quiz_mode(),
+          rating     = ui_rating(s$face_ids, s$current_idx),
+          processing = ui_processing(),
+          result     = ui_result(s$low_faces, s$ratings, s$mode)
+        )
+      )
+    }
   })
 
   # -- Intro: gender ----------------------------------------------------------

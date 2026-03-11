@@ -432,19 +432,22 @@ body {
 .credit a:hover { color: #aaa; border-color: #888; }
 
 /* ============================================================
-   GRID STATE — full-screen overlay layout
+   GRID STATE — full-viewport flow layout (no fixed positioning)
    ============================================================ */
 
-/* Override app-shell centering for grid */
+/* Reset Bootstrap container padding when grid is active */
+.container-fluid:has(.grid-state) {
+  padding: 0;
+}
+
 .grid-state {
-  position: fixed;
-  inset: 0;
-  z-index: 10;
-  background: var(--bg);
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
   max-width: none;
   gap: 0;
+  background: var(--bg);
   animation: fadeIn 0.25s ease;
 }
 
@@ -495,6 +498,7 @@ body {
   padding: 20px 24px;
   overflow: hidden;
   min-height: 0;
+  height: calc(100vh - 49px); /* 49px = topbar height */
 }
 
 /* Left panel */
