@@ -363,6 +363,37 @@ body {
   .thumb-img { width: 56px; }
 }
 
+/* ============================================================
+   MODE BUTTONS (intro — side by side)
+   ============================================================ */
+
+.mode-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.btn-mode {
+  flex: 1;
+  max-width: 200px;
+  padding: 12px 16px !important;
+  font-size: 0.8rem !important;
+}
+
+.btn-mode-alt {
+  background: transparent !important;
+  color: var(--fg) !important;
+  border: 1px solid var(--border) !important;
+}
+
+.btn-mode-alt:hover {
+  border-color: #555 !important;
+  background: #111 !important;
+  opacity: 1 !important;
+}
+
 /* Credit line */
 .credit {
   margin-top: 28px;

@@ -8,7 +8,8 @@ library(magick)
 # =============================================================================
 
 N_QUIZ     <- 20L   # faces shown per rating session
-FACES_DIR  <- "www/faces"
+FACES_DIR  <- "www/faces"          # originals — shown in rating UI & thumbnails
+WARPED_DIR <- "www/faces_warped"   # Shepards-warped — used only for compositing
 INDEX_FILE <- file.path(FACES_DIR, "faces_index.json")
 
 # Graceful startup check
@@ -30,7 +31,13 @@ all_faces  <- face_index$faces   # character vector: "001_03.png", etc.
 # Using tempfile() (not www/tmp/) so this works on ShinyApps.io where www/
 # is read-only at runtime.
 compute_composite <- function(face_files) {
-  paths     <- file.path(FACES_DIR, face_files)
+  # Use warped copies so pixel-averaging produces a sharp composite.
+  # Fall back to originals for any file missing from faces_warped/.
+  paths <- ifelse(
+    file.exists(file.path(WARPED_DIR, face_files)),
+    file.path(WARPED_DIR, face_files),
+    file.path(FACES_DIR,  face_files)
+  )
   stack     <- image_read(paths)
   composite <- image_average(stack)
   out_path  <- tempfile(fileext = ".png")
@@ -46,6 +53,16 @@ get_low_rated <- function(face_ids, ratings) {
   low    <- df$id[df$score <= 2]
   if (length(low) < 2) low <- df$id[seq_len(min(3L, nrow(df)))]
   low
+}
+
+# Return files for the highest-rated faces (rated 4-5, or top 3 if too few)
+get_high_rated <- function(face_ids, ratings) {
+  scores <- vapply(face_ids, function(f) ratings[[f]] %||% 3L, integer(1))
+  df     <- data.frame(id = face_ids, score = scores, stringsAsFactors = FALSE)
+  df     <- df[order(df$score, decreasing = TRUE), ]
+  high   <- df$id[df$score >= 4]
+  if (length(high) < 2) high <- df$id[seq_len(min(3L, nrow(df)))]
+  high
 }
 
 `%||%` <- function(a, b) if (!is.null(a)) a else b
@@ -70,7 +87,10 @@ ui_intro <- function() {
         "Averaging cancels asymmetries and unusual features, leaving a face your brain",
         "reads as healthy and familiar."
       ),
-      actionButton("btn_begin", "Begin Rating", class = "btn-main"),
+      div(class = "mode-buttons",
+        actionButton("btn_begin_low",  "Least Attractive", class = "btn-main btn-mode"),
+        actionButton("btn_begin_high", "Most Attractive",  class = "btn-main btn-mode btn-mode-alt")
+      ),
       div(class = "credit",
         "Face stimuli & averaging methodology by ",
         tags$a("Dr. Lisa DeBruine", href = "https://www.gla.ac.uk/schools/psychologyneuroscience/staff/lisadebruine/", target = "_blank"),
@@ -120,15 +140,15 @@ ui_processing <- function() {
   )
 }
 
-ui_result <- function(low_faces, ratings) {
+ui_result <- function(low_faces, ratings, mode) {
   req(!is.null(low_faces))
-  n_low <- length(low_faces)
+  n_low  <- length(low_faces)
+  label  <- if (mode == "high") "most attractive" else "least attractive"
+  eyebrow <- paste("Average of your", n_low,
+                   if (n_low == 1) paste(label, "face") else paste(label, "faces"))
 
   div(class = "state result-state",
-    div(class = "result-eyebrow",
-      paste("Average of your", n_low,
-            if (n_low == 1) "least attractive face" else "least attractive faces")
-    ),
+    div(class = "result-eyebrow", eyebrow),
     div(class = "result-image-wrap",
       imageOutput("composite_img", height = "auto")
     ),
@@ -190,12 +210,13 @@ ui <- page_fixed(
 server <- function(input, output, session) {
 
   s <- reactiveValues(
-    state         = "intro",
-    face_ids      = NULL,
-    current_idx   = 1L,
-    ratings       = list(),
-    composite_path = NULL,   # absolute OS temp path
-    low_faces     = NULL
+    state          = "intro",
+    face_ids       = NULL,
+    current_idx    = 1L,
+    ratings        = list(),
+    composite_path = NULL,
+    low_faces      = NULL,
+    mode           = "low"   # "low" = least attractive, "high" = most attractive
   )
 
   # Clean up temp composite on disconnect
@@ -212,17 +233,20 @@ server <- function(input, output, session) {
       intro      = ui_intro(),
       rating     = ui_rating(s$face_ids, s$current_idx),
       processing = ui_processing(),
-      result     = ui_result(s$low_faces, s$ratings)
+      result     = ui_result(s$low_faces, s$ratings, s$mode)
     )
   })
 
   # -- Intro ------------------------------------------------------------------
-  observeEvent(input$btn_begin, {
+  begin_quiz <- function(mode) {
+    s$mode        <- mode
     s$face_ids    <- sample(all_faces, N_QUIZ)
     s$current_idx <- 1L
     s$ratings     <- list()
     s$state       <- "rating"
-  })
+  }
+  observeEvent(input$btn_begin_low,  begin_quiz("low"))
+  observeEvent(input$btn_begin_high, begin_quiz("high"))
 
   # -- Rating -----------------------------------------------------------------
   lapply(1:5, function(r) {
@@ -241,9 +265,12 @@ server <- function(input, output, session) {
   observe({
     req(s$state == "processing")
     isolate({
-      low  <- get_low_rated(s$face_ids, s$ratings)
-      path <- compute_composite(low)
-      s$low_faces      <- low
+      picked <- if (s$mode == "high")
+        get_high_rated(s$face_ids, s$ratings)
+      else
+        get_low_rated(s$face_ids, s$ratings)
+      path             <- compute_composite(picked)
+      s$low_faces      <- picked
       s$composite_path <- path
       s$state          <- "result"
     })
