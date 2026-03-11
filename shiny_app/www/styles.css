@@ -93,6 +93,29 @@ body {
   line-height: 1.75;
 }
 
+.intro-choose {
+  margin-top: 28px;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.mode-descriptions {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  margin-top: 2px;
+}
+
+.mode-desc {
+  flex: 1;
+  font-size: 0.7rem;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.5;
+}
+
 /* ============================================================
    BUTTONS
    ============================================================ */
@@ -407,3 +430,242 @@ body {
   border-bottom: 1px solid #444;
 }
 .credit a:hover { color: #aaa; border-color: #888; }
+
+/* ============================================================
+   GRID STATE — full-screen overlay layout
+   ============================================================ */
+
+/* Override app-shell centering for grid */
+.grid-state {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  max-width: none;
+  gap: 0;
+  animation: fadeIn 0.25s ease;
+}
+
+/* Top bar */
+.grid-topbar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  gap: 16px;
+}
+
+.grid-topbar-title {
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg);
+}
+
+.btn-back {
+  background: transparent !important;
+  border: 1px solid var(--border) !important;
+  color: var(--muted) !important;
+  font-size: 0.72rem !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  padding: 5px 14px !important;
+  border-radius: 4px !important;
+  box-shadow: none !important;
+  margin-top: 0 !important;
+  transition: color 0.15s, border-color 0.15s !important;
+}
+.btn-back:hover {
+  color: var(--fg) !important;
+  border-color: #555 !important;
+  opacity: 1 !important;
+}
+
+/* Main two-column layout */
+.grid-layout {
+  display: flex;
+  flex: 1;
+  gap: 20px;
+  padding: 20px 24px;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* Left panel */
+.preview-panel {
+  width: 340px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.preview-slot {
+  width: 100%;
+  background: rgba(255,255,255,0.02);
+  border: 1px dashed rgba(255,255,255,0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Let images size at natural proportions */
+.preview-face-img,
+.preview-slot img,
+.preview-slot .shiny-image-output img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.preview-empty {
+  text-align: center;
+  color: var(--muted);
+  padding: 20px;
+}
+
+.preview-icon {
+  font-size: 2rem;
+  opacity: 0.2;
+  margin-bottom: 10px;
+}
+
+.preview-empty p {
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+}
+
+.preview-controls {
+  flex-shrink: 0;
+}
+
+.selection-count {
+  font-size: 0.72rem;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  margin-bottom: 10px !important;
+}
+
+.btn-generate {
+  width: 100%;
+}
+
+.btn-disabled {
+  opacity: 0.35 !important;
+  cursor: not-allowed !important;
+}
+
+.composite-done {
+  font-size: 0.72rem;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  margin-bottom: 8px !important;
+}
+
+.btn-download {
+  width: 100%;
+  margin-bottom: 6px !important;
+}
+
+/* Override Shiny's default downloadButton link styles */
+.btn-download, .btn-download:visited, .btn-download:hover {
+  text-decoration: none !important;
+  color: #000 !important;
+}
+
+.btn-pair {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+}
+
+.btn-pair-item {
+  flex: 1;
+  padding: 10px 8px !important;
+  font-size: 0.75rem !important;
+}
+
+/* Result screen: download + try again side by side */
+.result-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Right panel */
+.faces-grid-panel {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+/* Custom scrollbar */
+.faces-grid-panel::-webkit-scrollbar       { width: 4px; }
+.faces-grid-panel::-webkit-scrollbar-track { background: transparent; }
+.faces-grid-panel::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+
+.grid-instructions {
+  font-size: 0.68rem;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.face-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 6px;
+}
+
+.face-card {
+  position: relative;
+  cursor: pointer;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  transition: border-color 0.15s ease, transform 0.1s ease;
+  background: var(--faint);
+}
+
+.face-card:hover {
+  border-color: rgba(255,255,255,0.3);
+  transform: scale(1.025);
+  z-index: 1;
+}
+
+.face-card.selected {
+  border-color: var(--accent);
+}
+
+.face-thumb {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+
+.face-check {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: var(--accent);
+  color: #000;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  pointer-events: none;
+  line-height: 1;
+}
