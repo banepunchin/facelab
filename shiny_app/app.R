@@ -132,7 +132,7 @@ ui <- page_fluid(
         width: 340px; flex-shrink: 0;
         display: flex !important; flex-direction: column !important; gap: 14px;
       }
-      .faces-grid-panel { flex: 1 !important; min-width: 0; overflow-y: auto; }
+      .faces-grid-panel { flex: 1 !important; min-width: 0; overflow-y: scroll; }
       .face-grid {
         display: grid !important;
         grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)) !important;
