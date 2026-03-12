@@ -17,22 +17,28 @@ if (!file.exists(INDEX_FILE)) {
 
 face_index <- read_json(INDEX_FILE, simplifyVector = TRUE)
 all_faces  <- face_index$faces
+if (length(all_faces) == 0) stop("faces_index.json is empty. Re-run generate_aligned_faces.R.")
 
 # =============================================================================
 # Helpers
 # =============================================================================
 
 compute_composite <- function(face_files) {
-  paths     <- ifelse(
+  paths <- ifelse(
     file.exists(file.path(WARPED_DIR, face_files)),
     file.path(WARPED_DIR, face_files),
     file.path(FACES_DIR,  face_files)
   )
-  stack     <- image_read(paths)
-  composite <- image_average(stack)
-  out_path  <- tempfile(fileext = ".png")
-  image_write(composite, out_path, format = "png")
-  out_path
+  tryCatch({
+    stack     <- image_read(paths)
+    composite <- image_average(stack)
+    out_path  <- tempfile(fileext = ".png")
+    image_write(composite, out_path, format = "png")
+    out_path
+  }, error = function(e) {
+    showNotification("Could not generate composite. Try different faces.", type = "error")
+    NULL
+  })
 }
 
 # =============================================================================
@@ -116,9 +122,12 @@ ui <- page_fluid(
     tags$style(HTML("
       .shiny-html-output { display: block; width: 100%; }
       .container-fluid    { padding-left: 0 !important; padding-right: 0 !important; }
+      html, body { overflow: hidden !important; }
       .grid-state {
         display: flex !important; flex-direction: column !important;
-        min-height: 100vh; width: 100%; max-width: none !important;
+        height: 100vh !important; max-height: 100vh !important;
+        overflow: hidden !important;
+        width: 100%; max-width: none !important;
         background: #0d0d0d;
       }
       .grid-topbar {
@@ -135,11 +144,8 @@ ui <- page_fluid(
         width: 340px; flex-shrink: 0;
         display: flex !important; flex-direction: column !important; gap: 14px;
       }
-      .faces-grid-panel { flex: 1 !important; min-width: 0; overflow-y: scroll; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.2) transparent; }
-      .faces-grid-panel::-webkit-scrollbar { width: 6px; }
-      .faces-grid-panel::-webkit-scrollbar-track { background: transparent; }
-      .faces-grid-panel::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
-      .faces-grid-panel::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.45); }
+      .faces-grid-panel { flex: 1 !important; min-width: 0; overflow-y: scroll; scrollbar-width: none; }
+      .faces-grid-panel::-webkit-scrollbar { width: 0; background: transparent; }
       .face-grid {
         display: grid !important;
         grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)) !important;

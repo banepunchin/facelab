@@ -17,3 +17,5 @@ pkgdown/index.html
 pkgdown/man/figures/home*
 docs
 .rprofile
+.DS_Store
+shiny_app/www/tmp/
