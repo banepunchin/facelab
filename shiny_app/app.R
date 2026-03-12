@@ -55,6 +55,9 @@ ui_intro <- function() {
           href   = "https://www.gla.ac.uk/schools/psychologyneuroscience/staff/lisadebruine/",
           target = "_blank"),
         ", University of Glasgow Face Research Lab"
+      ),
+      div(class = "credit",
+        "Developed for student use by Hashi Abdulle"
       )
     )
   )
@@ -132,7 +135,11 @@ ui <- page_fluid(
         width: 340px; flex-shrink: 0;
         display: flex !important; flex-direction: column !important; gap: 14px;
       }
-      .faces-grid-panel { flex: 1 !important; min-width: 0; overflow-y: scroll; }
+      .faces-grid-panel { flex: 1 !important; min-width: 0; overflow-y: scroll; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.2) transparent; }
+      .faces-grid-panel::-webkit-scrollbar { width: 6px; }
+      .faces-grid-panel::-webkit-scrollbar-track { background: transparent; }
+      .faces-grid-panel::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
+      .faces-grid-panel::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.45); }
       .face-grid {
         display: grid !important;
         grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)) !important;
