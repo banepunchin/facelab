@@ -81,6 +81,7 @@ ui_grid_shell <- function(grid_faces) {
             div(
               class          = "face-card",
               `data-face-id` = f,
+              onmouseover    = "faceHover(this)",
               onclick        = "faceCardClick(this)",
               tags$img(src = paste0("faces/", f), class = "face-thumb", alt = "")
             )
@@ -140,12 +141,11 @@ ui <- page_fluid(
       .face-card {
         position: relative !important; cursor: pointer !important;
         border-radius: 6px !important; overflow: hidden !important;
-        border: 2px solid transparent !important;
-        transition: border-color 0.15s ease, transform 0.1s ease !important;
         background: #222 !important;
+        transition: box-shadow 0.15s ease !important;
       }
-      .face-card.selected { border-color: #ffffff !important; }
-      .face-card:hover { border-color: rgba(255,255,255,0.3) !important; }
+      .face-card:hover    { box-shadow: inset 0 0 0 2px rgba(255,255,255,0.35) !important; }
+      .face-card.selected { box-shadow: inset 0 0 0 3px #ffffff !important; }
       .face-thumb {
         width: 100% !important; aspect-ratio: 1/1 !important;
         object-fit: cover !important; display: block !important;
@@ -162,16 +162,18 @@ ui <- page_fluid(
   ),
   uiOutput("page"),
   tags$script(HTML("
+function faceHover(el) {
+  var faceId = el.getAttribute('data-face-id');
+  Shiny.setInputValue('preview_face', faceId, { priority: 'event' });
+}
 function faceCardClick(el) {
   var $card  = $(el);
-  var faceId = $card.attr('data-face-id');
   $card.toggleClass('selected');
   if ($card.hasClass('selected')) {
     $card.append('<div class=\"face-check\">\\u2713</div>');
   } else {
     $card.find('.face-check').remove();
   }
-  Shiny.setInputValue('preview_face', faceId, { priority: 'event' });
   var selected = [];
   $('.face-card.selected').each(function () {
     selected.push($(this).attr('data-face-id'));
