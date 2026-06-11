@@ -1,7 +1,7 @@
 # CLAUDE.md — Face Averager Project
 
 ## Project Goal
-Replicate the interactive "Face Averager" from the Quartz averageness hypothesis article.
+Replicate the interactive "Face Averager" from the Quartz averageness hypothesis article..
 - Source: University of Glasgow Face Research / webmorphR library (Lisa DeBruine)
 - Output: A fast, minimalist R Shiny app serving pre-generated composite images
 
